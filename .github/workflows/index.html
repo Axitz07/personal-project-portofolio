@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO & Social Media Meta Tags -->
+  <title>Ashen Reverie | Karya Tulis</title>
+  <meta name="description" content="Sebuah ruang hening untuk puisi dan cerita. 'Grey isn't confusion—it's where I stand between scars and hope'">
+  
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourwebsite.com/">
+  <meta property="og:title" content="Ashen Reverie">
+  <meta property="og:description" content="Kumpulan puisi dan cerita: 'Grey isn't confusion—it's where I stand between scars and hope'">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518558997970-4ddd2cd6e5ce?q=80&w=1200&auto=format&fit=crop">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://yourwebsite.com/">
+  <meta property="twitter:title" content="Ashen Reverie">
+  <meta property="twitter:description" content="Kumpulan puisi dan cerita: 'Grey isn't confusion—it's where I stand between scars and hope'">
+  <meta property="twitter:image" content="https://images.unsplash.com/photo-1518558997970-4ddd2cd6e5ce?q=80&w=1200&auto=format&fit=crop">
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      /* Premium Dark Background */
+      background: radial-gradient(circle at center, #1e1b2e 0%, #0d0c14 100%);
+      color: #e0e0e0;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 100px 20px 40px;
+      text-align: center;
+      transition: 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .container.reading {
+      max-width: 700px;
+      padding: 60px 40px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+      background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #a0a0b0;
+      margin-bottom: 50px;
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 0.5px;
+    }
+
+    .poem {
+      line-height: 2;
+      font-size: 1.15rem;
+      min-height: 200px;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      color: #d1d1e0;
+      font-weight: 300;
+    }
+
+    .title-read {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 25px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      color: #e0e0e0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Topbar Glassmorphism */
+    .topbar {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+      background: rgba(15, 12, 20, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 12px 20px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .library, .sound-toggle {
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #c0c0d0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+      user-select: none;
+    }
+
+    .library:hover, .sound-toggle:hover {
+      color: #fff;
+    }
+
+    /* Panel Glassmorphism */
+    .panel {
+      position: fixed;
+      right: -350px;
+      top: 0;
+      width: 320px;
+      height: 100%;
+      background: rgba(10, 8, 15, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 30px 25px;
+      transition: 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      overflow-y: auto;
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 99;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    }
+
+    .panel.active { right: 0; }
+
+    .panel-header {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-panel {
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #888;
+      transition: 0.3s;
+    }
+    
+    .close-panel:hover { color: #fff; }
+
+    .story {
+      margin-bottom: 15px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 15px;
+      transition: all 0.3s ease;
+      color: #a0a0b0;
+      font-size: 1rem;
+    }
+
+    .story:hover {
+      color: white;
+      transform: translateX(8px);
+      border-bottom-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter {
+      margin-bottom: 30px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .filter button {
+      flex: 1;
+      font-size: 0.8rem;
+      padding: 8px;
+    }
+
+    /* Footer / Branding */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: auto;
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    .social-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .social-links a {
+      color: #a0a0b0;
+      text-decoration: none;
+      transition: 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .social-links a:hover {
+      color: #fff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 12px 25px;
+      border-radius: 30px;
+      color: white;
+      transition: bottom 0.4s ease;
+      z-index: 1000;
+    }
+    .toast.show { bottom: 30px; }
+
+  </style>
+</head>
+<body>
+
+<!-- Effect Canvas -->
+<canvas id="ashes"></canvas>
+
+<div class="topbar">
+  <div class="library" onclick="togglePanel()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    Koleksi
+  </div>
+  <div class="sound-toggle" onclick="toggleSound()" id="soundIcon">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+  </div>
+</div>
+
+<div class="container" id="container">
+  <h1>Ashen Reverie</h1>
+  <div class="subtitle">"Grey isn't confusion—it's where I stand between scars and hope"</div>
+
+  <div class="poem" id="poem">klik sesuatu… atau biarkan sepi ini merangkai kata.</div>
+
+  <div class="btn-group">
+    <button onclick="randomByType('poem')">Puisi Acak</button>
+    <button onclick="randomByType('story')">Cerita Acak</button>
+    <button onclick="shareLink()">Bagikan Tautan</button>
+  </div>
+</div>
+
+<div class="panel" id="panel">
+  <div class="panel-header">
+    <span>Daftar Karya</span>
+    <span class="close-panel" onclick="togglePanel()">✕</span>
+  </div>
+  <div id="library-content"></div>
+</div>
+
+<div class="footer">
+  <div>Karya oleh <strong>Aditya Fhaturohman</strong></div>
+  <div class="social-links">
+    <!-- Ganti link dengan akun asli Anda -->
+    <a href="https://www.instagram.com/ditz_ftx/" target="_blank">Instagram</a>
+    <a href="#" target="_blank">wattpad</a>
+    <a href="https://www.tiktok.com/@ashen_reverie" target="_blank">TikTok</a>
+  </div>
+</div>
+
+<div class="toast" id="toast">Tautan berhasil disalin!</div>
+
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8f9c5e9f1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ===== ASHES / SOFT RAIN EFFECT =====
+const canvas = document.getElementById('ashes');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+let particles = Array.from({length: 120}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  s: Math.random() * 2 + 0.5, // size
+  xs: -1 + Math.random() * 2, // horizontal drift
+  ys: Math.random() * 2 + 0.5, // vertical fall
+  a: Math.random() * 0.5 + 0.1 // alpha
+}));
+
+function drawAshes() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(200, 210, 230, ${p.a})`;
+    ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Movement
+    p.x += p.xs;
+    p.y += p.ys;
+    
+    // Sway effect
+    p.xs += (Math.random() - 0.5) * 0.1;
+    if(p.xs > 2) p.xs = 2;
+    if(p.xs < -2) p.xs = -2;
+
+    if(p.x > canvas.width || p.x < 0 || p.y > canvas.height){
+      p.x = Math.random() * canvas.width;
+      p.y = -10;
+      p.xs = -1 + Math.random() * 2;
+    }
+  });
+  requestAnimationFrame(drawAshes);
+}
+drawAshes();
+
+// ===== DATA =====
+const contents = [
+  {
+    title: "Jejak Luka Dan Cahaya",
+    type: "poem",
+    content: `Ashen.\nThe remains of something that once burned—\nstill here, not alive as before,\nyet choosing to exist.\n\nDalam sunyi aku merangkai,\nKepingan debu menjadi arti.`
+  },
+  {
+    title: "Dalam Hening yang Kau Pecahkan",
+    type: "story",
+    content: `Masih kuingat hari itu, langit sama kelabunya dengan perasaanku. Kau datang tanpa aba-aba, memecahkan keheningan yang selama ini kupelihara.\n\nIni adalah tempat di mana kata-kata yang tak terucap menemukan jalannya.`
+  },
+  {
+    title: "Bayang di Balik Jendela",
+    type: "poem",
+    content: `Hujan turun lagi malam ini.\nMengetuk perlahan.\nMengingatkan pada janji,\nYang luruh bersama waktu.`
+  }
+];
+
+// ===== TYPEWRITER =====
+let typingTimer;
+function typeWriter(text, el, speed=25){
+  el.innerHTML = "";
+  let i=0;
+  clearTimeout(typingTimer);
+  
+  function t(){
+    if(i<text.length){
+      if(text[i] === '\\n') {
+        el.innerHTML += '<br>';
+      } else {
+        el.innerHTML += text[i];
+      }
+      i++;
+      typingTimer = setTimeout(t, speed);
+    }
+  }
+  t();
+}
+
+function renderContent(index){
+  const item = contents[index];
+  const el = document.getElementById('poem');
+  const container = document.getElementById('container');
+
+  container.classList.add('reading');
+  
+  // Fade out old content
+  el.style.opacity = 0;
+  el.style.transform = "translateY(15px)";
+
+  setTimeout(()=>{
+    el.innerHTML = `<div class='title-read'>${item.title}</div>`;
+    typeWriter(item.content, el, 20);
+    // Fade in new content
+    el.style.opacity = 1;
+    el.style.transform = "translateY(0)";
+  }, 400);
+
+  // Close panel if open on mobile
+  if(window.innerWidth < 768) {
+    panel.classList.remove('active');
+  }
+}
+
+function randomByType(type){
+  const filtered = contents.filter(c=>c.type===type);
+  const random = Math.floor(Math.random()*filtered.length);
+  renderContent(contents.indexOf(filtered[random]));
+}
+
+// ===== LIBRARY PANEL =====
+const panel = document.getElementById('panel');
+const libraryContent = document.getElementById('library-content');
+
+function renderLibrary(filter="all"){
+  let html = `
+    <div class='filter'>
+      <button onclick="renderLibrary('all')" ${filter==='all'?'style="background:rgba(255,255,255,0.2)"':''}>Semua</button>
+      <button onclick="renderLibrary('poem')" ${filter==='poem'?'style="background:rgba(255,255,255,0.2)"':''}>Puisi</button>
+      <button onclick="renderLibrary('story')" ${filter==='story'?'style="background:rgba(255,255,255,0.2)"':''}>Cerita</button>
+    </div>
+  `;
+
+  contents.forEach((item, i) => {
+    if(filter === 'all' || item.type === filter) {
+      html += `<div class='story' onclick='renderContent(${i})'>${item.title}</div>`;
+    }
+  });
+  
+  libraryContent.innerHTML = html;
+}
+
+renderLibrary();
+
+function togglePanel(){ 
+  panel.classList.toggle('active'); 
+}
+
+// ===== SOUND =====
+const bgm = document.getElementById('bgm');
+const soundIcon = document.getElementById('soundIcon');
+const iconMuted = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+const iconPlaying = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+
+function toggleSound(){
+  if(bgm.paused) {
+    bgm.play();
+    soundIcon.innerHTML = iconPlaying;
+  } else {
+    bgm.pause();
+    soundIcon.innerHTML = iconMuted;
+  }
+}
+
+// ===== SHARE LINK =====
+function shareLink() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  });
+}
+
+// INIT
+setTimeout(() => {
+  randomByType('poem');
+}, 500); // slight delay for initial animation
+
+</script>
+</body>
+</html>
